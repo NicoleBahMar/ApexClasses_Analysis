@@ -17,4 +17,20 @@ public with sharing class AccountTriggerHandler {
             insert tasksToInsert;
         }
     }
+
+    public static void updateAccountDescription(List<Account> newAccounts) {
+        List<Account> accountsToUpdate = new List<Account>();
+
+        for (Account acc : newAccounts) {
+            // Check if the Description is empty and if the Account Name is not null
+            if (String.isBlank(acc.Description) && String.isNotBlank(acc.Name)) {
+                acc.Description = 'Description updated by trigger for account: ' + acc.Name;
+                accountsToUpdate.add(acc);
+            }
+        }
+
+        if (!accountsToUpdate.isEmpty()) {
+            update accountsToUpdate;
+        }
+    }
 }
